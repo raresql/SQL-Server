@@ -1,10 +1,11 @@
--- Script Name: String Split
--- Script Type: Fuction
--- Developed By: Muhammad Imran
--- Date Created: 09 Dec 2022
--- Date Modified: 21 Dec 2022
+--Script Name: String Split
+--Script Type: Fuction
+--Article: https://raresql.com/2022/12/09/sql-server-2022-tsql-enhancement-string_split-function/
+--Developed By: Muhammad Imran
+--Date Created: 09 Dec 2022
+--Date Modified: 21 Dec 2022
 
--- Create Sample
+--Create Sample
 USE tempdb
 GO
 
@@ -33,20 +34,21 @@ GO
 -- End of Sample
 
 --Example-1
---Using String Split function 
+--Use STRING_SPLIT() function 
 USE tempdb
 GO
  
 SELECT EmployeeID
      , EmployeeName
- , value AS EmailAddress
- , Ordinal
-FROM   #Employee
+     , value AS EmailAddress
+     , Ordinal
+FROM #Employee
 CROSS APPLY STRING_SPLIT(EmailAddresses, ';', 1);
 GO
 -- End of example-1
 
 --Example-2
+--Use STRING_SPLIT() function
 USE tempdb
 GO
   
