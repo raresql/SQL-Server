@@ -1,0 +1,48 @@
+--Script Name: How to implement BLOB data type columns in the memory optimized table
+--Script Type: Solution
+--Article: https://raresql.com/2013/07/19/sql-server-hekaton-how-to-implement-blob-data-type-columns-in-the-memory-optimized-table/
+--Developed By: Muhammad Imran
+--Date Created: 19 July 2013
+--Date Modified: 28 Dec 2022
+
+--Error
+
+--Use database hkNorthwind
+USE Northwind
+GO
+
+--Create table
+CREATE TABLE tbl_sample
+(
+ [ID] integer not null primary key nonclustered hash
+ with (bucket_count = 1024),
+ [Name] varchar(200) not null,
+ [Address] varchar(Max)
+) WITH (MEMORY_OPTIMIZED = ON)
+GO
+
+--End of error
+
+--Solution
+
+--Use database Northwind
+USE Northwind
+GO
+
+--Create table
+CREATE TABLE tbl_sample_Memory_table
+(
+ [ID] integer not null primary key nonclustered hash
+ with (bucket_count = 1024),
+ [Name] varchar(200) not null,
+ ) WITH (MEMORY_OPTIMIZED = ON);
+GO
+ 
+CREATE TABLE tbl_sample_Normal_Table
+(
+ [ID] integer not null,
+ [Address] varchar(Max)
+);
+GO
+
+--End of solution
