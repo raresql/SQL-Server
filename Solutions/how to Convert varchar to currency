@@ -1,0 +1,45 @@
+--Script Name: How to convert varchar to currency
+--Script Type: Solution
+--Article: https://raresql.com/2013/09/27/sql-server-2012-how-to-convert-varchar-to-currency/
+--Developed By: Muhammad Imran
+--Date Created: 27th September 2013
+--Date Modified: 27th December 2022
+
+
+--Create Sample
+
+--Use database tempdb
+USE [tempdb]
+GO
+
+--Create table
+CREATE TABLE [dbo].[tbl_sample]
+(
+   [Col_ID] [int] NULL
+ , [Col_varchar] [varchar](50) NULL
+) ON [PRIMARY]; 
+GO
+
+--Insert records into table
+INSERT [dbo].[tbl_sample] ([Col_ID], [Col_varchar])
+VALUES (1, N'1000.00')
+INSERT [dbo].[tbl_sample] ([Col_ID], [Col_varchar])
+VALUES (2, N'-10.21')
+INSERT [dbo].[tbl_sample] ([Col_ID], [Col_varchar])
+VALUES (3, N'1234.5678')
+INSERT [dbo].[tbl_sample] ([Col_ID], [Col_varchar])
+VALUES (4, N'123.45');
+GO
+
+--End of Sample
+
+--Solution
+
+--Browse data
+SELECT [Col_ID]
+     , [Col_varchar]
+     , FORMAT(TRY_CONVERT(money,[Col_varchar]),'C','en-US') AS [Varchar_to_currency]
+FROM [tbl_sample];
+GO
+
+--End of solution
