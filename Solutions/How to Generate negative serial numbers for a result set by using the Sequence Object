@@ -1,0 +1,57 @@
+--Script Name: Generate negative serial numbers for a result set by using the Sequence Object
+--Script Type: Solution
+--Article: https://raresql.com/2014/03/17/sql-server-2012-how-to-generate-a-negative-serial-numbers-for-a-result-set-by-using-the-sequence-object/
+--Developed By: Muhammad Imran
+--Date Created: 17th March 2014
+--Date Modified: 26th Dec 2022
+
+--Sometimes you need to generate a negative serial number for any result set and you can easily achieve it 
+--by adjusting few properties in the sequence object.
+
+--Step 1
+--Create Sequence object
+
+--Use AdventureWorks database
+USE AdventureWorks2012
+GO
+
+--Create sequence Seq_Sample
+CREATE SEQUENCE dbo.Seq_Sample
+   AS int
+    START WITH -1
+    INCREMENT BY -1
+    MINVALUE -3000
+    MAXVALUE -1
+    CYCLE ;
+GO
+
+--End of step 1
+
+--Step 2
+--Use above sequence to generate negative seriel number
+
+--Use AdventureWorks database
+USE AdventureWorks2012
+GO
+
+--Browse data
+SELECT
+NEXT VALUE FOR Seq_Sample AS [Sno], Name
+FROM sys.all_objects ;
+GO
+
+--End of Step 2
+
+--Step 3
+--Reset the sequence number in order to start the sequence number from -1 each time
+
+--Use AdventureWorks database
+USE AdventureWorks2012
+GO
+
+--Alter Sequence
+ALTER SEQUENCE dbo.Seq_Sample
+RESTART WITH -1 ;
+GO
+
+--End of Step 3
