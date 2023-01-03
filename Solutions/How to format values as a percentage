@@ -1,0 +1,68 @@
+--Script Name: How to format values as a percentage
+--Script Type: Solution
+--Article: https://raresql.com/2013/08/04/sql-server-how-to-format-values-as-a-percentage/
+--Developed By: Muhammad Imran
+--Date Created: 4 Aug 2013
+--Date Modified: 27 Dec 2022
+
+--Sample
+
+--Use database tempdb
+USE tempdb
+GO
+
+--Create table
+CREATE TABLE [dbo].[Student]
+(
+ [Student ID] int,
+ [Student Name] [varchar](50) NOT NULL,
+ [Percentage] numeric(18,2)
+);
+GO
+
+--Insert records into table
+Insert into dbo.[Student] values (1,'Bob', 0.10)
+Insert into dbo.[Student] values (2,'Alexander',0.50)
+Insert into dbo.[Student] values (3,'Hosanna',0.85)
+Insert into dbo.[Student] values (4,'William',0.11)
+Insert into dbo.[Student] values (5,'Hulda',1.20)
+Insert into dbo.[Student] values (6,'Jacoba',1.15);
+GO
+
+--End of sample
+
+--Solution-1
+
+--This script is compatible with SQL Server 2000 and above.
+
+--Use database tempdb
+USE tempdb
+GO
+
+--Browse table
+--Use CONVERT() function
+SELECT [Student ID]
+	 , [Student Name]
+	 , [Percentage]
+	 , CONVERT(VARCHAR(50)
+	 , [Percentage]*100)+' %' AS [%] FROM dbo.Student;
+GO
+
+--End of solution-1
+
+--Solution-2
+
+--This script is compatible with SQL Server 2012 and above.
+
+--Browse table
+--Use FORMAT() function
+SELECT [Student ID]
+	 , [Student Name]
+	 , [Percentage]
+	 , FORMAT([Percentage],'p') AS [%] FROM dbo.Student
+GO
+
+--End of solution-2
+
+--Database cleanup
+DROP TABLE [dbo].[Student]
