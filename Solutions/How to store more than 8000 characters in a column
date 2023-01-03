@@ -1,0 +1,72 @@
+--Script Name: How to store more than 8000 characters in a column
+--Script Type: Solution
+--Article: https://raresql.com/2013/06/04/sql-server-how-to-store-more-than-8000-characters-in-a-column/
+--Developed By: Muhammad Imran
+--Date Created: 4 June 2013
+--Date Modified: 28 Dec 2022
+
+--Step-1
+
+--Sample
+
+--use database tempdb
+USE tempdb
+GO
+
+--Create table
+CREATE TABLE tbl_sample
+(
+ [ID] INT,
+ [Column_varchar] VARCHAR(MAX)
+);
+GO
+
+--End of sample
+--End of step-1
+
+--Step-2
+--use database tempdb
+USE tempdb
+GO
+
+--Insert record into table
+INSERT INTO tbl_sample VALUES (1, REPLICATE('A',10000));
+GO
+
+--End of step-2
+
+--Step-3
+--use database tempdb
+USE tempdb
+GO
+
+--Browse table
+SELECT DATALENGTH([Column_varchar]) AS [Column Length]
+FROM tbl_sample;
+GO
+
+--End of step-3
+
+--Step-4
+--use database tempdb
+USE tempdb
+GO
+
+--Insert record into table
+INSERT INTO tbl_sample VALUES
+(2, REPLICATE(CAST('A' AS VARCHAR(MAX)),10000));
+GO
+
+--End of step-4
+
+--Step-5
+--use database tempdb
+USE tempdb
+GO
+
+--Browse table
+SELECT DATALENGTH([Column_varchar]) AS [Column Length]
+FROM tbl_sample;
+GO
+
+--End of step-5
