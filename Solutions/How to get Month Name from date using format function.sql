@@ -1,4 +1,4 @@
---Script Name: Get Month Name from date using format function
+--Script Name: How to get Month Name from date using format function
 --Script Type: Solution
 --Article: https://raresql.com/2013/04/25/sql-server-get-month-name-from-date-using-format-function/
 --Developed By: Muhammad Imran
