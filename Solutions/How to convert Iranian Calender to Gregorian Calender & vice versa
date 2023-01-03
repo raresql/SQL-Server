@@ -1,0 +1,134 @@
+--Script Name: Convert Iranian Calender to Gregorian Calender & vice versa
+--Script Type: Solution
+--Article: https://raresql.com/2012/04/18/how-to-Convert-iranian-Calender-to-Gregorian-Calender-vice-versa/
+--Developed By: Muhammad Imran
+--Date Created: 18th April 2012
+--Date ModIFied: 28th Dec 2022
+
+--Script-1
+--Convert Iranian Calender to Gregorian Calender
+
+--First we need to Convert Persian Calender date to Julian Calender date
+--Create User Defined Function
+CREATE FUNCTION [dbo].[UDF_Persian_To_Julian](@iYear int,@iMonth int,@iDay int)
+RETURNS bigint
+AS
+BEGIN
+ 
+--DECLARE Variables 
+DECLARE @PERSIAN_EPOCH  AS int
+DECLARE @epbASe AS bigint
+DECLARE @epyear AS bigint
+DECLARE @mdays AS bigint
+DECLARE @Jofst  AS Numeric(18,2)
+DECLARE @jdn bigint
+
+--SET Variable Values 
+SET @PERSIAN_EPOCH=1948321
+SET @Jofst=2415020.5
+ 
+IF @iYear>=0 
+    BEGIN
+        SET @epbASe=@iyear-474 
+    END
+ELSE
+    BEGIN
+        SET @epbASe = @iYear - 473 
+    END
+    SET @epyear=474 + (@epbASe%2820) 
+IF @iMonth<=7
+    BEGIN
+        SET @mdays=(CONVERT(bigint,(@iMonth) - 1) * 31)
+    END
+ELSE
+    BEGIN
+        SET @mdays=(CONVERT(bigint,(@iMonth) - 1) * 30+6)
+    END
+    SET @jdn =CONVERT(int,@iday) + @mdays+ CAST(((@epyear * 682) - 110) / 2816 AS int)  + (@epyear - 1) * 365 + CAST(@epbASe / 2820 AS int) * 1029983 + (@PERSIAN_EPOCH - 1) 
+    RETURN @jdn
+END;
+GO
+
+--Create User Defined Function
+CREATE FUNCTION [dbo].[UDF_Julian_To_Gregorian] (@jdn bigint)
+RETURNS nvarchar(11)
+AS
+BEGIN
+    DECLARE @Jofst  AS Numeric(18,2)
+    SET @Jofst=2415020.5
+    RETURN CONVERT(nvarchar(11),CONVERT(datetime,(@jdn- @Jofst),113),110)
+END;
+GO
+
+--Here is the example
+SELECT dbo.[UDF_Julian_To_Gregorian](dbo.[UDF_Persian_To_Julian](1391,1,30))
+--Result is 04-18-2012
+
+--END of Script-1
+
+--Script-2
+--Convert Gregorian Calender to Iranian Calender
+
+--Create User Defined Function
+CREATE Function dbo.[UDF_Gregorian_To_Persian] (@date datetime)
+RETURNs nvarchar(50)
+AS
+BEGIN
+    --DECLARE Variables
+    DECLARE @depoch AS bigint
+    DECLARE @cycle  AS bigint
+    DECLARE @cyear  AS bigint
+    DECLARE @ycycle AS bigint
+    DECLARE @aux1 AS bigint
+    DECLARE @aux2 AS bigint
+    DECLARE @yday AS bigint
+    DECLARE @Jofst  AS Numeric(18,2)
+    DECLARE @jdn bigint  
+    DECLARE @iYear   AS Integer
+    DECLARE @iMonth  AS Integer
+    DECLARE @iDay    AS Integer
+    
+    --SET Variable Values
+    SET @Jofst=2415020.5
+    SET @jdn=Round(CAST(@date AS int)+ @Jofst,0)
+    SET @depoch = @jdn - [dbo].[UDF_Persian_To_Julian](475, 1, 1) 
+    SET @cycle = CAST(@depoch / 1029983 AS int) 
+    SET @cyear = @depoch%1029983 
+      
+    IF @cyear = 1029982
+       BEGIN
+         SET @ycycle = 2820 
+       END
+    ELSE
+       BEGIN
+        SET @aux1 = CAST(@cyear / 366 AS int) 
+        SET @aux2 = @cyear%366 
+        SET @ycycle = CAST(((2134 * @aux1) + (2816 * @aux2) + 2815) / 1028522 AS int) + @aux1 + 1 
+      END
+      
+    SET @iYear = @ycycle + (2820 * @cycle) + 474 
+ 
+    IF @iYear <= 0
+      BEGIN 
+        SET @iYear = @iYear - 1 
+      END
+    SET @yday = (@jdn - [dbo].[UDF_Persian_To_Julian](@iYear, 1, 1)) + 1 
+    IF @yday <= 186 
+       BEGIN
+         SET @iMonth = CEILING(CONVERT(Numeric(18,4),@yday) / 31) 
+       END
+    ELSE
+       BEGIN
+          SET @iMonth = CEILING((CONVERT(Numeric(18,4),@yday) - 6) / 30)  
+       END
+       SET @iDay = (@jdn - [dbo].[UDF_Persian_To_Julian](@iYear, @iMonth, 1)) + 1 
+  
+      RETURN CONVERT(nvarchar(50),@iDay) + '-' +   CONVERT(nvarchar(50),@iMonth) +'-' + CONVERT(nvarchar(50),@iYear)
+END;
+GO
+
+--example
+SELECT dbo.[UDF_Gregorian_To_Persian]('2012-04-18') AS [Persian Date]
+--Result is 30-1-1391
+
+--END of Script-2
