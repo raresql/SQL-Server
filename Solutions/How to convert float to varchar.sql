@@ -35,14 +35,14 @@ Declare @float as float
 --Set value of variable 
 Set @float =1234567.12345678;
 
---Select set value
+--browse set value
 Select @float as [Float];
 GO
 
 --Set value of variable
 Set @varchar =Format(@float,'#.#############');
 
---Select set value
+--browse set value
 Select @varchar as [Float converted to varchar];
 GO
 
