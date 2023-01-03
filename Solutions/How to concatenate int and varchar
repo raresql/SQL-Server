@@ -1,0 +1,46 @@
+--Script Name: How to concatenate int and varchar
+--Script Type: Solution
+--Article: https://raresql.com/2013/07/31/sql-server-how-to-concatenate-int-and-varchar/
+--Developed By: Muhammad Imran
+--Date Created: 31 July 2013
+--Date Modified: 27 Dec 2022
+
+--Error
+
+--Use database AdventureWorks2012
+Use AdventureWorks2012
+GO
+
+--Browse table
+SELECT [DepartmentID] + ' ' + [Name] AS [Department ID & Name]
+FROM [HumanResources].[Department]
+GO
+
+--End of error
+
+--Solution-1
+--Use database AdventureWorks2012
+Use AdventureWorks2012
+GO
+
+--Browse table
+--Use CONVERT() function
+SELECT CONVERT(VARCHAR(5),[DepartmentID]) + ' ' + [Name] 
+AS [Department ID & Name]
+FROM [HumanResources].[Department]
+
+--End of solution-1
+
+--Solution-2
+
+--Use database AdventureWorks2012
+Use AdventureWorks2012
+GO
+
+--Browse table
+--Use CONCAT() function
+SELECT CONCAT([DepartmentID] , ' ' , [Name] )
+AS [Department ID & Name]
+FROM [HumanResources].[Department]
+
+--End of solution-2
