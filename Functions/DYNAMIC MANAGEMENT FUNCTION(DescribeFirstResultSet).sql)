@@ -1,0 +1,29 @@
+--Script Name: sys.dm_exec_describe_first_result_set – dynamic management function
+--Script Type: Function
+--Article: https://raresql.com/2012/07/29/sql-server-2012-sys-dm_exec_describe_first_result_set-dynamic-management-function/
+--Developed By: Muhammad Imran
+--Date Created: 29 July 2012
+--Date Modified: 7 Jan 2023
+
+--Syntax
+
+sys.dm_exec_describe_first_result(@tsql, @params, @include_browse_information)
+
+--End of syntax
+
+---sp_describe_first_result_set
+
+--Use database AdventureWorks2012
+USE AdventureWorks2012;
+GO
+
+--Execute result
+EXEC sp_describe_first_result_set @tsql =N'SELECT * FROM HumanResources.Department'
+ 
+---sys.dm_exec_describe_first_result_set
+
+--Use database AdventureWorks2012
+USE AdventureWorks2012;
+GO
+SELECT [column_ordinal],[name],[system_type_id]   FROM sys.dm_exec_describe_first_result_set
+(N'SELECT * FROM HumanResources.Department', null, 0) ;
