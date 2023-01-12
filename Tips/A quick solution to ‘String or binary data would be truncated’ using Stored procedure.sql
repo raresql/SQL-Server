@@ -1,5 +1,5 @@
 --Script Name: A quick solution to ‘String or binary data would be truncated’ using Stored procedure
---Script Type: Error
+--Script Type: Tips
 --Article: https://raresql.com/2014/01/03/sql-server-a-quick-solution-to-string-or-binary-data-would-be-truncated-using-stored-procedure/
 --Developed By: Muhammad Imran
 --Date Created: 3 Jan 2014
