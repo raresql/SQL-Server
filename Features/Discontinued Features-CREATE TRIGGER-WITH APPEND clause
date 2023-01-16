@@ -1,0 +1,60 @@
+--Script Name: Discontinued Features-CREATE TRIGGER-WITH APPEND clause
+--Script Type: Feature
+--Article: https://raresql.com/2013/03/03/sql-server-2012-discontinued-features-create-trigger-with-append-clause/
+--Developed By: Muhammad Imran
+--Date Created: 3 Mar 2013
+--Date Modified: 12 Jan 2023
+
+--Step-1
+
+--Create table
+CREATE TABLE dbo.Student
+([Student_ID] INT,
+ [Student_Name] VARCHAR(100)
+)
+GO
+
+--Create trigger
+CREATE TRIGGER dbo.FirstTrigger
+ON dbo.Student
+FOR INSERT
+AS
+BEGIN
+  PRINT 'First Trigger'
+END
+GO
+
+--Create trigger
+CREATE TRIGGER dbo.SecondTrigger
+ON dbo.Student
+FOR INSERT
+WITH APPEND
+AS
+BEGIN
+  PRINT 'Second Trigger'
+END
+GO
+
+--End of step-1
+
+--Step-2
+
+--No query
+
+--End of step-2
+
+--Step-3
+
+--Browsr trigger
+Select A.object_id,A.definition from sys.sql_modules A
+Inner Join sys.triggers B On A.object_id =B.object_id
+where definition like '%with append%'
+
+--End of step-3
+
+--Step-4
+
+--Insert record into table
+insert into student values (1,'Imran')
+
+--End of step-4
